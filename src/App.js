@@ -1,27 +1,74 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import MessageBoard from './components/MessageBoard';
+import MessageMaker from './components/MessageMaker';
+
+import Login from '../src/screens/Login';
+
+import TextMessageService from './services/TextChatService';
+
+
+Array.prototype.insert = function (index, item) {
+  this.splice(index, 0, item);
+};
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      messages: [
+
+      ],
+      isLoggedIn: false
+    }
+  }
+
+  componentDidMount() {
+    TextMessageService.receive(this.messageReceived);
+  }
+
+  messageReceived = (message) => {
+    this.onSentMessage(message.message);
+  }
+
+  onSentMessage = (message) => {
+    let messages = this.state.messages;
+    messages = messages.splice(messages.length, 0, {
+      content: message,
+      friend: false
+    });
+
+    this.setState({ message: messages });
+  }
+
+  onLoginResponse = (response) => {
+    if(response.code === 1){
+      this.setState({isLoggedIn: true});
+    }else{
+
+    }
+  }
+
+
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+    if (this.state.isLoggedIn) {
+      return (
+        <div className="App">
+          <header className="App-header"></header>
+
+          <MessageBoard messages={this.state.messages} />
+
+          <MessageMaker onSentMessage={this.onSentMessage} />
+        </div>
+      )
+    } else {
+      return (
+        <div className="App" style={{ backgroundColor: 'black' }}>
+          <Login onLoginResponse={this.onLoginResponse} />
+        </div>
+      )
+    }
   }
 }
 

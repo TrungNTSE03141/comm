@@ -1,0 +1,22 @@
+
+.container {
+    margin-bottom: 10px;
+    overflow: auto;
+    display: block;
+}
+
+.message{
+    border-radius: 1.3em;
+    background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+    //background-image: linear-gradient(to right, red , yellow);
+    width: max-content;
+    max-width: 55%;
+    line-height: 2;
+    padding-left: 20px;
+    padding-right: 20px;
+    //color: blue;
+    color: white;
+    //Fit content
+    display: block;
+    overflow: auto;
+}
